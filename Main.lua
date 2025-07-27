@@ -73,27 +73,30 @@ local function C_6()
 	local clearButton = G2L["TextButton_7"]
 	local textBox = G2L["TextBox_4"]
 
-	local Febipasslmao = nil
-
+	local remoteEvents = {}
 	for _, obj in pairs(game:GetDescendants()) do
 		if obj:IsA("RemoteEvent") then
-			Febipasslmao = obj
-			break
+			table.insert(remoteEvents, obj)
 		end
 	end
 
-	if Febipasslmao then
+	if #remoteEvents > 0 then
 		pcall(function()
-			Febipasslmao.Name = "vulnerability"
+			remoteEvents[1].Name = "vulnerability"
 		end)
 	end
 
 	executeButton.MouseButton1Click:Connect(function()
 		local code = textBox.Text
-		if Febipasslmao and code and code ~= "" then
-			pcall(function()
-				Febipasslmao:FireServer(code)
-			end)
+		if code and code ~= "" then
+			for _, remote in ipairs(remoteEvents) do
+				local success, _ = pcall(function()
+					remote:FireServer(code)
+				end)
+				if success then
+					break
+				end
+			end
 		end
 	end)
 
