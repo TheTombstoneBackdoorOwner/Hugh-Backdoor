@@ -69,36 +69,4 @@ G2L["UIAspectRatioConstraint_9"] = Instance.new("UIAspectRatioConstraint")
 G2L["UIAspectRatioConstraint_9"].Parent = G2L["Frame_2"]
 G2L["UIAspectRatioConstraint_9"].AspectRatio = 2.64486
 
-local executeButton = G2L["TextButton_5"]
-local clearButton = G2L["TextButton_7"]
-local textBox = G2L["TextBox_4"]
-
-local remoteEvents = {}
-for _, obj in pairs(game:GetDescendants()) do
-    if obj:IsA("RemoteEvent") then
-        table.insert(remoteEvents, obj)
-    end
-end
-
-executeButton.MouseButton1Click:Connect(function()
-    local code = textBox.Text
-    if code and code ~= "" then
-        for _, remote in ipairs(remoteEvents) do
-            local success, _ = pcall(function()
-                remote:FireServer(code)
-            end)
-            if success then
-                pcall(function()
-                    remote.Name = "vulnerability"
-                end)
-                break
-            end
-        end
-    end
-end)
-
-clearButton.MouseButton1Click:Connect(function()
-    textBox.Text = ""
-end)
-
 return G2L["ScreenGui_1"], require
